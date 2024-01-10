@@ -1,9 +1,5 @@
 using TMPro;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System;
 
 public class PlayerController : MonoBehaviour {
     private int level = 0;
@@ -12,7 +8,6 @@ public class PlayerController : MonoBehaviour {
     private int nextLevelExp;
 
     private readonly float movementSpeed = 15;
-    private readonly float rotationSpeed = 90;
     private readonly int expMultiplier = 50;
 
     [SerializeField] GameObject spellPrefab;
@@ -23,9 +18,7 @@ public class PlayerController : MonoBehaviour {
         exp += newExp;
         
         if (exp >= nextLevelExp) {
-            Debug.Log(level);
             level++;
-            Debug.Log(level);
             nextLevelExp = expMultiplier * level * level;
         };
 
@@ -46,15 +39,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HandleMovement() {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
-
-        transform.Translate(Vector3.forward * Time.deltaTime * verticalInput * movementSpeed);
-        transform.Rotate(Vector3.up * Time.deltaTime * horizontalInput * rotationSpeed);
+        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * movementSpeed);
+        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * movementSpeed);
     }
 
     private void CastSpell() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
             Instantiate(spellPrefab, transform.position, transform.rotation);
         }
     }
