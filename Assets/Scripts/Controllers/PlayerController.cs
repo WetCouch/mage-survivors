@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     private int nextLevelExp = 0;
 
     private readonly float movementSpeed = 15;
+    private readonly float jumpForce = 300;
     private readonly int expMultiplier = 50;
     private readonly int manaMultiplier = 100;
     private readonly int manaRegen = 10;
@@ -20,6 +21,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] TextMeshProUGUI manaText;
     [SerializeField] TextMeshProUGUI expText;
     [SerializeField] TextMeshProUGUI levelText;
+
+    private (Vector3 movement, bool jump) input = (movement: Vector3.zero, jump: false);
+
+    private Collider playerCollider;
+    private Rigidbody playerRb;
 
     public void UpdateExp(int newExp) {
         exp += newExp;
@@ -35,6 +41,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Start() {
+        playerCollider = GetComponent<Collider>();
+        playerRb = GetComponent<Rigidbody>();
+
         UpdateExp(0);
         StartCoroutine(RegenerateMana());
     }
@@ -44,6 +53,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
+        UpdateInput();
         CastSpell();
     }
 
@@ -51,9 +61,18 @@ public class PlayerController : MonoBehaviour {
         UpdateManaText();
     }
 
+    private void UpdateInput() {
+        input.movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxis("Vertical"));
+        if (Input.GetKeyDown(KeyCode.Space)) input.jump = true;
+    }
+
     private void HandleMovement() {
-        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * movementSpeed);
-        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * movementSpeed);
+        playerRb.MovePosition(transform.position + transform.TransformDirection(input.movement * Time.deltaTime * movementSpeed));
+
+        if (input.jump && IsGrounded()) {
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            input.jump = false;
+        }
     }
 
     private void CastSpell() {
@@ -89,5 +108,9 @@ public class PlayerController : MonoBehaviour {
 
     private void UpdateManaText() {
         manaText.text = $"Mana: { mana } / { maxMana }";
+    }
+
+    private bool IsGrounded() {
+        return Physics.Raycast(transform.position, Vector3.down, playerCollider.bounds.extents.y + 0.1f);
     }
 }
