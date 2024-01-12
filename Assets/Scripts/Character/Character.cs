@@ -13,7 +13,7 @@ public class Character : MonoBehaviour {
     public Character(
         (int multiplier, int regen) hp,
         (int multiplier, int regen) mana,
-        int jumpForce = 20,
+        int jumpForce = 300,
         int movementSpeed = 15
     ) {
         this.movementSpeed = movementSpeed;
@@ -33,7 +33,9 @@ public class Character : MonoBehaviour {
     }
 
     protected void Jump() {
-        if (IsGrounded()) rbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (IsGrounded()) {
+            rbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 
     private bool IsGrounded() {
