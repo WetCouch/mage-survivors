@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
-        if (FindObjectsOfType<EnemyController>().Length == 0) {
+        if (FindObjectsOfType<Enemy>().Length == 0) {
             NewRound();
         }
     }

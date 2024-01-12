@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 391614883}
   - component: {fileID: 391614882}
   - component: {fileID: 391614881}
+  - component: {fileID: 391614885}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -378,6 +379,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &391614885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391614880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bb1918f80f240baac9843b46ae6389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaText: {fileID: 897732502}
+  expText: {fileID: 1672641331}
+  levelText: {fileID: 1569639967}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,9 +1251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellPrefab: {fileID: 4253443879424030823, guid: 80bf65fc57a044ff49ec062d586f05ec,
     type: 3}
-  manaText: {fileID: 897732502}
-  expText: {fileID: 1672641331}
-  levelText: {fileID: 1569639967}
 --- !u!54 &1872372743
 Rigidbody:
   m_ObjectHideFlags: 0
