@@ -64,7 +64,7 @@ public class PlayerController : Character {
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && mana.IsMinimum(spell.manaCost) && !spellOnCooldown) {
             mana.Change(-spell.manaCost);
-            Instantiate(spellPrefab, transform.position, transform.rotation).GetComponent<Spell>().caster = this;
+            Instantiate(spellPrefab, transform.position + transform.forward, transform.rotation).GetComponent<Spell>().caster = this;
             StartCoroutine(SpellCooldown(spell));
         }
     }
