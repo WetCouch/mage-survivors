@@ -9,6 +9,7 @@ public class Character : MonoBehaviour {
 
     private Rigidbody rbody;
     private Collider coll;
+    private CharacterHead characterHead;
 
     public Character(
         (int multiplier, int regen) hp,
@@ -23,17 +24,29 @@ public class Character : MonoBehaviour {
         this.hp = new CharacterResource(hp.multiplier, hp.regen);
     }
 
+    public Transform HeadTransform() {
+        return characterHead.transform;
+    }
+
     protected virtual void Start() {
         coll = GetComponent<Collider>();
         rbody = GetComponent<Rigidbody>();
+        characterHead = GetComponentInChildren<CharacterHead>();
     }
 
     protected void Move(Vector3 direction) {
         rbody.MovePosition(transform.position + transform.TransformDirection(direction * Time.deltaTime * movementSpeed));
     }
 
+    protected void Rotate(Vector2 rotation) {
+        transform.Rotate(0, rotation.y, 0);
+        characterHead.Rotate(rotation.x);
+    }
+
     protected void Jump() {
         if (IsGrounded()) {
+            Debug.Log(characterHead.transform.rotation.eulerAngles.y);
+            Debug.Log(characterHead.transform.localRotation.eulerAngles.y);
             rbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }

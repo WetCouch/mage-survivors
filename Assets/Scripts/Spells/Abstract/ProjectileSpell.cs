@@ -21,7 +21,7 @@ public abstract class ProjectileSpell : Spell {
     }
 
     public override void Cast() {
-        
+        state = SpellState.Casted;
     }
 
     protected abstract void SpellEffect(Enemy enemy);
@@ -59,9 +59,10 @@ public abstract class ProjectileSpell : Spell {
     }
 
     private void HandleFlight() {
-        transform.Translate(Vector3.forward * Time.deltaTime  * spellSpeed);
-
-        DestroyOutOfWorld();
+        if (state == SpellState.Casted) {
+            transform.Translate(Vector3.forward * Time.deltaTime  * spellSpeed);
+            DestroyOutOfWorld();
+        }
     }
 
     private void DestroyOutOfWorld() {
