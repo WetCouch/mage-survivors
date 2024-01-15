@@ -1,20 +1,19 @@
 using UnityEngine;
 
-public enum SpellState {
-    Selected,
-    Casted
-}
-
 public abstract class Spell : MonoBehaviour {
-    // public static readonly Vector3 SpellOffset = new Vector3(1, -0.5f, 1.25f);
-    public static readonly Vector3 SpellOffset = new Vector3(0.75f, -0.25f, 0.25f);
+    internal static readonly Vector3 HandOffset = new Vector3(0.75f, -0.25f, 0.25f);
+    internal static readonly Vector3 CenterOffset = new Vector3(0, 0, 0.5f);
 
     public readonly int manaCost;
     public readonly float cooldown;
 
-    protected SpellState state = SpellState.Selected;
-
     internal PlayerController caster;
+
+    public static (Vector3 position, Quaternion rotation) GetTransform(Character caster, Vector3 offset) {
+        Transform trasnform = caster.HeadTransform();
+
+        return (trasnform.TransformPoint(Vector3.forward + offset), trasnform.rotation);
+    }
 
     public Spell(
         int manaCost,
@@ -24,21 +23,18 @@ public abstract class Spell : MonoBehaviour {
         this.cooldown = cooldown;
     }
 
-    public Vector3 GetFollowOffset() {
-        return new Vector3(SpellOffset.x * caster.transform.forward.x, SpellOffset.y, SpellOffset.z);
-    }
-
     public abstract void Cast();
 
+    protected virtual void HandleMovement() {
+        FollowPlayer();
+    }
+
     protected void FollowPlayer() {
-        if (state == SpellState.Selected) {
-            Transform targetTransform = caster.HeadTransform();
-            // transform.SetPositionAndRotation(caster.transform.position + GetFollowOffset(), caster.transform.rotation);
-            transform.SetPositionAndRotation(targetTransform.TransformPoint(Vector3.forward + SpellOffset), targetTransform.rotation);
-        }
+        var (position, rotation) = GetTransform(caster, HandOffset);
+        transform.SetPositionAndRotation(position, rotation);
     }
 
     private void LateUpdate() {
-        FollowPlayer();
+        HandleMovement();
     }
 }

@@ -45,8 +45,6 @@ public class Character : MonoBehaviour {
 
     protected void Jump() {
         if (IsGrounded()) {
-            Debug.Log(characterHead.transform.rotation.eulerAngles.y);
-            Debug.Log(characterHead.transform.localRotation.eulerAngles.y);
             rbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }

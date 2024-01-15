@@ -2,11 +2,23 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+public enum SpellState {
+    Rest,
+    Ready,
+    Fly
+}
+
+
 public abstract class ProjectileSpell : Spell {
+    private SpellState state = SpellState.Rest;
 
     private readonly float spellRadius;
     private readonly float spellSpeed;
     private readonly float spellDistance;
+
+    private readonly float preparationTime = 0.15f;
+    private float preparationTimer = 0;
+    private Vector3 preparationPosDiff;
 
     public ProjectileSpell(
         int manaCost,
@@ -21,7 +33,8 @@ public abstract class ProjectileSpell : Spell {
     }
 
     public override void Cast() {
-        state = SpellState.Casted;
+        preparationPosDiff = GetTransform(caster, CenterOffset).position - transform.position;
+        state = SpellState.Ready;
     }
 
     protected abstract void SpellEffect(Enemy enemy);
@@ -33,8 +46,18 @@ public abstract class ProjectileSpell : Spell {
         }
     }
 
-    private void FixedUpdate() {
-        HandleFlight();
+    protected override void HandleMovement() {
+        switch (state) {
+            case SpellState.Rest:
+                FollowPlayer();
+                break;
+            case SpellState.Ready:
+                Prepare();
+                break;
+            case SpellState.Fly:
+                FlyForward();
+                break;
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -58,11 +81,21 @@ public abstract class ProjectileSpell : Spell {
             .ToArray();
     }
 
-    private void HandleFlight() {
-        if (state == SpellState.Casted) {
-            transform.Translate(Vector3.forward * Time.deltaTime  * spellSpeed);
-            DestroyOutOfWorld();
+    private void FlyForward() {
+        transform.Translate(Vector3.forward * Time.deltaTime  * spellSpeed);
+        DestroyOutOfWorld();
+    }
+
+    private void Prepare() {
+        // On each frame transform position by ratio of time between frames to whole animation time
+        if (preparationTimer < preparationTime) {
+            preparationTimer += Time.deltaTime;
+            float transformPercent = Time.deltaTime / preparationTime;
+            transform.position = transform.position + (preparationPosDiff * transformPercent);
+        } else {
+            state = SpellState.Fly;
         }
+
     }
 
     private void DestroyOutOfWorld() {

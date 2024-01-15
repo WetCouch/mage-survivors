@@ -58,10 +58,8 @@ internal class SpellBook {
     }
 
     private void NewSpellObject() {
-        Transform targetTransform = caster.HeadTransform();
-        // TransformPoint(Vector3.forward * distance);
-        // activeSpellInstance = Object.Instantiate(selectedSpell.prefab, caster.transform.position + Spell.SpellOffset, caster.transform.rotation);
-        activeSpellInstance = Object.Instantiate(selectedSpell.prefab, targetTransform.TransformPoint(Vector3.forward + Spell.SpellOffset), targetTransform.rotation);
+        var (position, rotation) = Spell.GetTransform(caster, Spell.HandOffset);
+        activeSpellInstance = Object.Instantiate(selectedSpell.prefab, position, rotation);
         activeSpellInstance.GetComponent<Spell>().caster = caster;
     }
 }
