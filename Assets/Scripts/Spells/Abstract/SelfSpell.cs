@@ -3,6 +3,7 @@ public abstract class SelfSpell : Spell {
 
     public override void Cast() {
         SpellEffect(caster);
+        Destroy(gameObject);
     }
 
     protected abstract void SpellEffect(PlayerController player);

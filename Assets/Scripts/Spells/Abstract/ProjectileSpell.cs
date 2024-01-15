@@ -24,7 +24,7 @@ public abstract class ProjectileSpell : Spell {
         int manaCost,
         float cooldown,
         float spellRadius,
-        float spellSpeed = 30,
+        float spellSpeed = 75,
         float spellDistance = 100
     ) : base(manaCost, cooldown) {
         this.spellRadius = spellRadius;

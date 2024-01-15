@@ -1,5 +1,5 @@
 public class FireballSpell : ProjectileSpell {
-    private readonly int damage = 75;
+    private readonly int damage = 100;
 
     public FireballSpell() : base(50, 0.5f, 5) {}
 
