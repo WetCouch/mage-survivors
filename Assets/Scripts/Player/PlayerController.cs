@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : Character {
@@ -50,6 +51,7 @@ public class PlayerController : Character {
 
     private void Update() {
         UpdateInput();
+        ChangeSpell();
         CastSpell();
     }
 
@@ -69,6 +71,12 @@ public class PlayerController : Character {
         }
 
         input.rotation = Vector2.zero;
+    }
+
+    private void ChangeSpell() {
+        for (int spellIndex = 0; spellIndex < spellPrefabs.Length; spellIndex++) {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + spellIndex)) spellBook.ChooseSpell(spellIndex);
+        }
     }
 
     private void CastSpell() {
