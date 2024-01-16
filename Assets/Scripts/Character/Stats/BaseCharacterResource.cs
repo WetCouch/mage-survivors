@@ -8,9 +8,8 @@ public abstract class BaseCharacterResource {
 
     protected readonly int multiplier;
 
-    public BaseCharacterResource(int multiplier, int level) {
+    public BaseCharacterResource(int multiplier) {
         this.multiplier = multiplier;
-        Upgrade(level);
     }
 
     public abstract void Upgrade(int level);

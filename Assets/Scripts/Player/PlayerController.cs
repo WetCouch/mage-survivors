@@ -15,7 +15,7 @@ public class PlayerController : Character {
         jump: false
     );
 
-    public PlayerController() : base((multiplier: 100, regen: 10), (multiplier: 100, regen: 10)) {} 
+    public PlayerController() : base((multiplier: 100, regenRate: 0.1f), (multiplier: 100, regenRate: 0.1f)) {} 
 
     protected override void Awake() {
         base.Awake();

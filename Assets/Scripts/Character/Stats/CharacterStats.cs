@@ -11,15 +11,15 @@ public class CharacterStats {
     internal CharacterResource hp;
 
     public CharacterStats(
-        (int multiplier, int regen) hp,
-        (int multiplier, int regen) mana,
+        (int multiplier, float regenRate) hp,
+        (int multiplier, float regenRate) mana,
         int expMultiplier,
         int level = 1
     ) {
         this.level = level;
 
-        this.mana = new CharacterResource(mana.multiplier, mana.regen, level);
-        this.hp = new CharacterResource(hp.multiplier, hp.regen, level);
+        this.mana = new CharacterResource(mana.multiplier, mana.regenRate, level);
+        this.hp = new CharacterResource(hp.multiplier, hp.regenRate, level);
         this.exp = new CharacterExp(expMultiplier, level);
     }
 

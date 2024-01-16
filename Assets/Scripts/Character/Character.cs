@@ -11,8 +11,8 @@ public class Character : MonoBehaviour {
     private CharacterHead characterHead;
 
     public Character(
-        (int multiplier, int regen) hp,
-        (int multiplier, int regen) mana,
+        (int multiplier, float regenRate) hp,
+        (int multiplier, float regenRate) mana,
         int expMultiplier = 50,
         int jumpForce = 300,
         int movementSpeed = 15
