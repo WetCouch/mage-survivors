@@ -19,6 +19,7 @@ public abstract class ProjectileSpell : Spell {
     private readonly float preparationTime = 0.15f;
     private float preparationTimer = 0;
     private Vector3 preparationPosDiff;
+    private Vector3 previousFrameCasterPosition;
 
     public ProjectileSpell(
         int manaCost,
@@ -33,6 +34,7 @@ public abstract class ProjectileSpell : Spell {
     }
 
     public override void Cast() {
+        previousFrameCasterPosition = caster.transform.position;
         preparationPosDiff = GetTransform(caster, CenterOffset).position - transform.position;
         state = SpellState.Ready;
     }
@@ -61,8 +63,10 @@ public abstract class ProjectileSpell : Spell {
     }
 
     private void OnTriggerEnter(Collider other) {
-        EffectEnemies(DetectEnemies());
-        Destroy(gameObject);
+        if (state == SpellState.Fly) {
+            EffectEnemies(DetectEnemies());
+            Destroy(gameObject);
+        }
     }
 
     private void EffectEnemies(Enemy[] enemies) {
@@ -89,9 +93,12 @@ public abstract class ProjectileSpell : Spell {
     private void Prepare() {
         // On each frame transform position by ratio of time between frames to whole animation time
         if (preparationTimer < preparationTime) {
-            preparationTimer += Time.deltaTime;
+            Vector3 casterPositionDifference = caster.transform.position - previousFrameCasterPosition;
+            previousFrameCasterPosition = caster.transform.position;
             float transformPercent = Time.deltaTime / preparationTime;
-            transform.position = transform.position + (preparationPosDiff * transformPercent);
+
+            preparationTimer += Time.deltaTime;
+            transform.position += casterPositionDifference + (preparationPosDiff * transformPercent);
         } else {
             state = SpellState.Fly;
         }
