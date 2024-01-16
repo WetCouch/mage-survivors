@@ -4,7 +4,7 @@ public class FireballSpell : ProjectileSpell {
     public FireballSpell() : base(50, 0.5f, 5) {}
 
     protected override void SpellEffect(Enemy enemy) {
-        enemy.hp.Change(-damage);
+        enemy.ChangeHP(-damage);
         DetectDeadEnemy(enemy);
     }
 }

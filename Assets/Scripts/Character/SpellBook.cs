@@ -19,27 +19,24 @@ internal class SpellIncantation {
     }
 }
 
-internal class SpellBook {
-    private readonly SpellIncantation[] spellContainer;
-
+[RequireComponent(typeof(Character))]
+internal class SpellBook : MonoBehaviour {
+    [SerializeField]
+    private GameObject[] spellPrefabs;
+    
+    private SpellIncantation[] spellContainer;
     private SpellIncantation selectedSpell;
     private GameObject activeSpellInstance;
 
-    private PlayerController caster;
+    private Character caster;
 
-    public SpellBook(GameObject[] prefabs, PlayerController caster) {
-        spellContainer = prefabs
-            .Select(prefab => new SpellIncantation(prefab))
-            .ToArray();
-
-            this.caster = caster;
-
-        ChooseSpell(0);
+    public int SpellCount() {
+        return spellContainer.Length;
     }
 
     public void ChooseSpell(int index) {
         if (activeSpellInstance != null) {
-           Object.Destroy(activeSpellInstance);
+           Destroy(activeSpellInstance);
         }
 
         selectedSpell = spellContainer[index];
@@ -59,7 +56,18 @@ internal class SpellBook {
 
     private void NewSpellObject() {
         var (position, rotation) = Spell.GetTransform(caster, Spell.HandOffset);
-        activeSpellInstance = Object.Instantiate(selectedSpell.prefab, position, rotation);
+        activeSpellInstance = Instantiate(selectedSpell.prefab, position, rotation);
         activeSpellInstance.GetComponent<Spell>().caster = caster;
+    }
+
+    private void Awake() {
+        caster = GetComponent<Character>();
+        spellContainer = spellPrefabs
+            .Select(prefab => new SpellIncantation(prefab))
+            .ToArray();
+    }
+
+    private void Start() {
+        ChooseSpell(0);
     }
 }

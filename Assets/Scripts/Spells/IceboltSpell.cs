@@ -4,7 +4,7 @@ public class IceboltSpell : ProjectileSpell {
     public IceboltSpell() : base(25, 0.5f, 0.5f) {}
 
     protected override void SpellEffect(Enemy enemy) {
-        enemy.hp.Change(-damage);
+        enemy.ChangeHP(-damage);
         DetectDeadEnemy(enemy);
     }
 }

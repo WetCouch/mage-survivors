@@ -1,14 +1,8 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(SpellBook))]
 public class PlayerController : Character {
     private SpellBook spellBook ;
-    private int level = 0;
-    private int exp = 0;
-    private int nextLevelExp = 0;
-    private readonly int expMultiplier = 50;
-
-    [SerializeField] GameObject[] spellPrefabs;
 
     private readonly float sensitivity = 15;
     private (
@@ -21,28 +15,20 @@ public class PlayerController : Character {
         jump: false
     );
 
-    public PlayerController() : base((multiplier: 100, regen: 10), (multiplier: 100, regen: 10)) {}
+    public PlayerController() : base((multiplier: 100, regen: 10), (multiplier: 100, regen: 10)) {} 
 
-    public void UpdateExp(int newExp) {
-        exp += newExp;
-        
-        if (exp >= nextLevelExp) {
-            level++;
-            nextLevelExp = expMultiplier * level * level;
-            mana.Upgrade(level);
-        };
-
-        UIManager.UpdateExpText(exp, nextLevelExp, level);
+    protected override void Awake() {
+        base.Awake();
+        spellBook = GetComponent<SpellBook>();
     }
 
-    protected override void Start() {
-        base.Start();
-        spellBook = new(spellPrefabs, this);
+    private void Start() {
+        stats.mana.OnChange += UIManager.UpdateManaText;
+        stats.exp.OnChange += UIManager.UpdateExpText;
+        stats.OnLevelChange += UIManager.UpdateLevelText;
+        stats.EmitStats();
 
-        mana.OnChange += UIManager.UpdateManaText;
-
-        UpdateExp(0);
-        StartCoroutine(mana.Regenerate());
+        StartCoroutine(stats.mana.Regenerate());
     }
 
     private void FixedUpdate() {
@@ -74,12 +60,12 @@ public class PlayerController : Character {
     }
 
     private void ChangeSpell() {
-        for (int spellIndex = 0; spellIndex < spellPrefabs.Length; spellIndex++) {
+        for (int spellIndex = 0; spellIndex < spellBook.SpellCount(); spellIndex++) {
             if (Input.GetKeyDown(KeyCode.Alpha1 + spellIndex)) spellBook.ChooseSpell(spellIndex);
         }
     }
 
     private void CastSpell() {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) spellBook.Cast(mana);
+        if (Input.GetKeyDown(KeyCode.Mouse0)) spellBook.Cast(stats.mana);
     }
 }

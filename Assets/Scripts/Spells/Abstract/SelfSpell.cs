@@ -6,5 +6,5 @@ public abstract class SelfSpell : Spell {
         Destroy(gameObject);
     }
 
-    protected abstract void SpellEffect(PlayerController player);
+    protected abstract void SpellEffect(Character caster);
 }

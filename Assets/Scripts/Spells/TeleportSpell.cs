@@ -5,7 +5,7 @@ public class TeleportSpell : SelfSpell {
 
     public TeleportSpell() : base(25, 5) {}
 
-    protected override void SpellEffect(PlayerController player) {
-        player.transform.Translate(Vector3.forward * distance);
+    protected override void SpellEffect(Character caster) {
+        caster.transform.Translate(Vector3.forward * distance);
     }
 }

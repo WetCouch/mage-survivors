@@ -1,8 +1,7 @@
 using UnityEngine;
 
 public class Character : MonoBehaviour {
-    internal CharacterResource mana;
-    internal CharacterResource hp;
+    public CharacterStats stats;
 
     private readonly float movementSpeed;
     private readonly float jumpForce;
@@ -14,21 +13,29 @@ public class Character : MonoBehaviour {
     public Character(
         (int multiplier, int regen) hp,
         (int multiplier, int regen) mana,
+        int expMultiplier = 50,
         int jumpForce = 300,
         int movementSpeed = 15
     ) {
         this.movementSpeed = movementSpeed;
         this.jumpForce = jumpForce;
 
-        this.mana = new CharacterResource(mana.multiplier, mana.regen);
-        this.hp = new CharacterResource(hp.multiplier, hp.regen);
+        stats = new CharacterStats(hp, mana, expMultiplier);
+    }
+
+    public void ChangeHP(int hp) {
+        stats.hp.Change(hp);
+    }
+
+    public bool IsDead() {
+        return !stats.hp.IsMinimum(1);
     }
 
     public Transform HeadTransform() {
         return characterHead.transform;
     }
 
-    protected virtual void Start() {
+    protected virtual void Awake() {
         coll = GetComponent<Collider>();
         rbody = GetComponent<Rigidbody>();
         characterHead = GetComponentInChildren<CharacterHead>();

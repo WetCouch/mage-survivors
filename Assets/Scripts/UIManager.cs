@@ -13,9 +13,12 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI levelText;
 
-    public static void UpdateExpText(int curr, int nextLevel, int level) {
-        _expText.text = $"Exp: { curr } / { nextLevel }";
+    public static void UpdateLevelText(int level) {
         _levelText.text = $"Level: { level }";
+    }
+
+    public static void UpdateExpText(int curr, int nextLevel) {
+        _expText.text = $"Exp: { curr } / { nextLevel }";
     }
 
     public static void UpdateManaText(int curr, int max) {

@@ -42,9 +42,9 @@ public abstract class ProjectileSpell : Spell {
     protected abstract void SpellEffect(Enemy enemy);
 
     protected void DetectDeadEnemy(Enemy enemy) {
-        if (!enemy.hp.IsMinimum(1)) {
+        if (enemy.IsDead()) {
             Destroy(enemy.gameObject);
-            caster.UpdateExp(enemy.expValue);
+            caster.stats.ChangeExp(enemy.expValue);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class ProjectileSpell : Spell {
     }
 
     private void Prepare() {
-        // On each frame transform position by ratio of time between frames to whole animation time
+        // On each frame transform position by ratio of time between frames to whole animation time plus player position change
         if (preparationTimer < preparationTime) {
             Vector3 casterPositionDifference = caster.transform.position - previousFrameCasterPosition;
             previousFrameCasterPosition = caster.transform.position;

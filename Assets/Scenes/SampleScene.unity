@@ -292,6 +292,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bcb655e82584702a44d7883ed83f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &371877608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371877603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d334e3c376b4c9aab84daff1c1e72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   spellPrefabs:
   - {fileID: 4253443879424030823, guid: 80bf65fc57a044ff49ec062d586f05ec, type: 3}
   - {fileID: 4253443879424030823, guid: a4dbf579bae2d41309c49a6787cccaeb, type: 3}
@@ -1411,6 +1423,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 371877604}
+    - targetCorrespondingSourceObject: {fileID: 2251796308315347765, guid: 70666f530860a4ad096657c49ddf2523,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 371877608}
   m_SourcePrefab: {fileID: 100100000, guid: 70666f530860a4ad096657c49ddf2523, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

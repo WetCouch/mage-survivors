@@ -7,7 +7,7 @@ public abstract class Spell : MonoBehaviour {
     public readonly int manaCost;
     public readonly float cooldown;
 
-    internal PlayerController caster;
+    internal Character caster;
 
     public static (Vector3 position, Quaternion rotation) GetTransform(Character caster, Vector3 offset) {
         Transform trasnform = caster.HeadTransform();
